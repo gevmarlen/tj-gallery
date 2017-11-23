@@ -137,7 +137,7 @@
 								$last_item.width = $last_item.width + max_bucket_width - getWidthForBucket(bucket.items);
 								
 								
-								if (((($last_item.width - old_w) < 40) && bucket.last) || (!bucket.last)){
+								if (!bucket.last){
 									
 									$last_item.pic.css({
 										width: $last_item.width + 'px'
@@ -145,6 +145,29 @@
 									$last_item.container.css({
 										width: $last_item.width+"px",
 									});
+								} else if (((($last_item.width - old_w) < 40) && bucket.last)) {	
+									var difference = ($last_item.width - old_w < 0) ? 0 : $last_item.width - old_w;									
+
+									$.each(bucket.items, function(idx2, item) {
+										var pic = item.pic,
+											container = item.container;
+
+										pic.css({
+											width: item.width + (difference / bucket.items.length) + 'px',
+											height: $last_item.height * (($last_item.width - ((difference / bucket.items.length) * (bucket.items.length - 1))) / old_w) + 'px'
+										});
+										item.container.css({
+											width: item.width + (difference / bucket.items.length) + "px",
+											height: $last_item.height * (($last_item.width - ((difference / bucket.items.length) * (bucket.items.length - 1))) / old_w) + 'px'
+										});
+									});								
+									
+									$last_item.pic.css({
+										width: ($last_item.width - ((difference / bucket.items.length) * (bucket.items.length - 1))) + 'px'
+									});
+									$last_item.container.css({
+										width: ($last_item.width - ((difference / bucket.items.length) * (bucket.items.length - 1))) + "px"
+									});	
 								}
 							}
 						});
